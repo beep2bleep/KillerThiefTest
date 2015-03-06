@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CreateHouses : MonoBehaviour {
 
@@ -45,8 +46,8 @@ public class CreateHouses : MonoBehaviour {
             location = _location;
             type = _type;
         }
-        int location;
-        string type;
+        public int location;
+        public string type;
     }
 
     public int buildingCount = 7;
@@ -55,17 +56,22 @@ public class CreateHouses : MonoBehaviour {
     public int minWidth = 4;
     public int maxWidth = 9;
     List<House> housesToBuild = new List<House>();
+    public GameObject stairs;
+    public GameObject _1x1;
+    public GameObject _2x1;
+    public GameObject _2x2;
+    public GameObject _3x2;
 
 	// Use this for initialization
 	void Start () {
-        
 
-        
+        int leftSideOfCurrentBuilding = 0;
+        System.Random random = new System.Random();
 
         for (int i = 0; i < buildingCount; i++)
         {
+            
             //Console.WriteLine("Building a building");
-            System.Random random = new System.Random();
             int height = random.Next(minHeight, maxHeight);
             int width = random.Next(minWidth, maxWidth);
             House houseToBuild = new House(height, width);
@@ -84,6 +90,10 @@ public class CreateHouses : MonoBehaviour {
                 }
 
                 int stairIndex = random.Next(0, width);
+                while(currentFloor.squareTaken[stairIndex])
+                {
+                    stairIndex = random.Next(0, width);//Make sure stairs are not in a taken spot
+                }
                 currentFloor.squareTaken[stairIndex] = true;
                 currentFloor.rooms.Add(new Room(stairIndex, "Stair"));
                 //Start at left work accross randomly try to add rooms
@@ -127,7 +137,42 @@ public class CreateHouses : MonoBehaviour {
                 }
             }
             housesToBuild.Add(houseToBuild);
+
+            //Lets draw one
+
+            for (int floor = 0; floor < height; floor++)
+            {
+                HouseFloor currentFloor = houseToBuild.floors[floor];
+                foreach(Room room in currentFloor.rooms)
+                {
+                    
+                    //GameObject.CreatePrimitive(PrimitiveType.Cube);//;(new Cube(), this.transform.position(), this.transform.rotation);
+                    if(room.type == "Stair")
+                    {
+                        Instantiate(stairs, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                    }
+                    if (room.type == "1x1")
+                    {
+                        Instantiate(_1x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                    }
+                    if (room.type == "2x1")
+                    {
+                        Instantiate(_2x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation); 
+                    }
+                    if (room.type == "2x2")
+                    {
+                        Instantiate(_2x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                    }
+                    if (room.type == "3x2")
+                    {
+                        Instantiate(_3x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                    }
+                }
+            }
+            leftSideOfCurrentBuilding = leftSideOfCurrentBuilding + houseToBuild.width + random.Next(1, 3);
         }
+
+        
 	}
 	
 	// Update is called once per frame

@@ -1,0 +1,73 @@
+﻿#pragma once
+#include <stdint.h>
+struct t8;
+struct t434;
+struct t873;
+struct t868;
+struct t704;
+struct t434;
+#include "t4.h"
+#include "t875.h"
+struct t873  : public t4
+{
+	bool f10;
+	t8* f11;
+	t8* f12;
+	t8* f13;
+	t8* f14;
+	t8* f15;
+	t8* f16;
+	t8* f17;
+	t8* f18;
+	t8* f19;
+	t8* f20;
+	t8* f21;
+	t8* f22;
+	t8* f23;
+	t8* f24;
+	int32_t f25;
+	t868 * f26;
+	int32_t f27;
+	t434* f28;
+	t434* f29;
+	t434* f30;
+	t434* f31;
+	t434* f32;
+	t434* f33;
+	t434* f34;
+	t434* f35;
+	t434* f36;
+	t434* f37;
+	t434* f38;
+	int32_t f39;
+	bool f40;
+	bool f41;
+	int32_t f42;
+	bool f43;
+	t8* f44;
+	t8* f45;
+	t434* f46;
+	t434* f47;
+	t434* f48;
+	t434* f49;
+	t704* f50;
+	t434* f51;
+	t434* f52;
+	t434* f53;
+	t434* f54;
+	int32_t f55;
+	t8* f56;
+	t434* f57;
+};
+struct t873_SFs{
+	t8* f0;
+	t8* f1;
+	t8* f2;
+	t8* f3;
+	t434* f4;
+	t434* f5;
+	t434* f6;
+	t434* f7;
+	t434* f8;
+	t873 * f9;
+};
