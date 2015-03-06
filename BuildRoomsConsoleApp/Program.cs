@@ -40,8 +40,6 @@ namespace BuildRoomsConsoleApp
         public int width;
     }
 
-    //5 room types
-
     public class Room
     {
         public Room(int _location, string _type)
@@ -57,71 +55,85 @@ namespace BuildRoomsConsoleApp
     {       
         static void Main(string[] args)
         {
-            //Console.ReadLine();
-            Console.WriteLine("Building 1 building");
-            Random random = new Random();
-            int height = random.Next(8, 13);
-            int width = random.Next(4, 9);
-            House houseToBuild = new House(height, width);
+            int buildingCount = 7;
+            int minHeight = 8;
+            int maxHeight = 13;
+            int minWidth = 4;
+            int maxWidth = 9;
 
-            //House is container of floors
+            List<House> housesToBuild = new List<House>();
 
-            //Lets just always worth from bottom left
-
-            for (int floor = 0; floor < height; floor++)
+            //for (int i = 0; i < buildingCount; i++)
             {
-                HouseFloor currentFloor = houseToBuild.floors[floor];
-                bool topFloor = floor == height - 1;
-                HouseFloor nextFloor = new HouseFloor(0);
-                if (!topFloor)
+                Console.WriteLine("Building a building");
+                Random random = new Random();
+                int height = random.Next(8, 13);
+                int width = random.Next(4, 9);
+                House houseToBuild = new House(height, width);
+
+                //House is container of floors
+                //Lets just always start from bottom left
+
+                for (int floor = 0; floor < height; floor++)
                 {
-                    nextFloor = houseToBuild.floors[floor + 1];
+                    HouseFloor currentFloor = houseToBuild.floors[floor];
+                    bool topFloor = floor == height - 1;
+                    HouseFloor nextFloor = new HouseFloor(0);
+                    if (!topFloor)
+                    {
+                        nextFloor = houseToBuild.floors[floor + 1];
+                    }
+
+                    int stairIndex = random.Next(0, width);
+                    currentFloor.squareTaken[stairIndex] = true;
+                    currentFloor.rooms.Add(new Room(stairIndex, "Stair"));
+                    //Start at left work accross randomly try to add rooms
+                    //If 3 width open, then 4 options, if 2 then 3 options, it 1 then 1
+                    for (int horizontalIndex = 0; horizontalIndex < width; )//Increment will happen as part of the loop
+                    {
+                        if (horizontalIndex == stairIndex || currentFloor.squareTaken[horizontalIndex])
+                        {
+                            horizontalIndex++;//Move to next horizontalIndex
+                            continue;
+                        }
+                        if (CanFit3WideRoom(width, currentFloor, stairIndex, horizontalIndex))//We can fit a three width room
+                        {
+                            if (!topFloor)//Rand between 4 roomtypes
+                            {
+                                horizontalIndex = AddUpTo3x2Room(random, currentFloor, nextFloor, horizontalIndex);
+                            }
+                            else//Rand between 2 roomtypes
+                            {
+                                horizontalIndex = Add2x1Or2x2Room(random, currentFloor, horizontalIndex);
+                            }
+                        }
+                        else if (CanFit2WideRoom(width, currentFloor, stairIndex, horizontalIndex))
+                            //We can fit a two width room
+                        {
+                            if (!topFloor)//Rand between 3 roomtypes
+                            {
+                                horizontalIndex = AddUpTo2x2Room(random, currentFloor, nextFloor, horizontalIndex);
+                            }
+                            else//Rand between 2 roomtypes
+                            {
+                                horizontalIndex = Add2x1Or2x2Room(random, currentFloor, horizontalIndex);
+                            }
+
+                        }
+                        else//We can only fit a 1x1 room
+                        {
+                            //Place 1x1 room
+                            horizontalIndex = Add1x1Room(currentFloor, horizontalIndex);
+                        }
+                    }
                 }
-                
-                int stairIndex = random.Next(0, width);
-                currentFloor.squareTaken[stairIndex] = true;
-                currentFloor.rooms.Add(new Room(stairIndex, "Stair"));
-                //Start at left work accross randomly try to add rooms
-                //If 3 width open, then 4 options, if 2 then 3 options, it 1 then 1
-                for(int horizontalIndex = 0; horizontalIndex < width; )//Increment will happen as part of the loop
-                {
-                    if(horizontalIndex == stairIndex || currentFloor.squareTaken[horizontalIndex])
-                    {
-                        horizontalIndex++;//Move to next horizontalIndex
-                        continue;
-                    }
-                    if (CanFit3WideRoom(width, currentFloor, stairIndex, horizontalIndex))//We can fit a three width room
-                    {
-                        if(!topFloor)//Rand between 4 roomtypes
-                        {
-                            horizontalIndex = AddUpTo3x2Room(random, currentFloor, nextFloor, horizontalIndex);
-                        }
-                        else//Rand between 2 roomtypes
-                        {
-                            horizontalIndex = Add2x1Or2x2Room(random, currentFloor, horizontalIndex);
-                        }
-                    }
-                    else if (CanFit2WideRoom(width, currentFloor, stairIndex, horizontalIndex))
-                        //We can fit a two width room
-                    {
-                        if(!topFloor)//Rand between 3 roomtypes
-                        {
-                            horizontalIndex = AddUpTo2x2Room(random, currentFloor, nextFloor, horizontalIndex);
-                        }
-                        else//Rand between 2 roomtypes
-                        {
-                            horizontalIndex = Add2x1Or2x2Room(random, currentFloor, horizontalIndex);
-                        }
-                        
-                    }
-                    else//We can only fit a 1x1 room
-                    {
-                        //Place 1x1 room
-                        horizontalIndex = Add1x1Room(currentFloor, horizontalIndex);
-                    }
-                }
+                housesToBuild.Add(houseToBuild);
             }
 
+            //Lets try to just draw one house
+
+
+            //Need to draw the houses including the 1-3 spaces in between
 
             Console.ReadLine();
         }
@@ -136,65 +148,65 @@ namespace BuildRoomsConsoleApp
             return horizontalIndex + 2 < stairIndex && horizontalIndex + 2 < width && !currentFloor.squareTaken[horizontalIndex + 1] && !currentFloor.squareTaken[horizontalIndex + 2];
         }
 
-private static int AddUpTo2x2Room(Random random, HouseFloor currentFloor, HouseFloor nextFloor, int horizontalIndex)
-    //Returns new horizontal index after adding the room
-{
-    int roomType = random.Next(0, 3);
-    switch (roomType)
-    {
-        case 0:
-            Add1x1Room(currentFloor, horizontalIndex);
-            return horizontalIndex++;
-        case 1:
-            add2x1Room(currentFloor, horizontalIndex);
-            return horizontalIndex + 2;
-        case 2:
-            add2x2Room(currentFloor, nextFloor, horizontalIndex);
-            return horizontalIndex + 2;
-        default:
-            throw new Exception("Failure attempting to add room");
-    }
-}
+        private static int AddUpTo2x2Room(Random random, HouseFloor currentFloor, HouseFloor nextFloor, int horizontalIndex)
+            //Returns new horizontal index after adding the room
+        {
+            int roomType = random.Next(0, 3);
+            switch (roomType)
+            {
+                case 0:
+                    Add1x1Room(currentFloor, horizontalIndex);
+                    return horizontalIndex++;
+                case 1:
+                    add2x1Room(currentFloor, horizontalIndex);
+                    return horizontalIndex + 2;
+                case 2:
+                    add2x2Room(currentFloor, nextFloor, horizontalIndex);
+                    return horizontalIndex + 2;
+                default:
+                    throw new Exception("Failure attempting to add room");
+            }
+        }
 
-private static int Add2x1Or2x2Room(Random random, HouseFloor currentFloor, int horizontalIndex)
-    //Returns new horizontal index after adding the room
-{
-    int roomType = random.Next(0, 2);
-    switch (roomType)
-    {
-        case 0:
-            Add1x1Room(currentFloor, horizontalIndex);
-            return ++horizontalIndex;
-        case 1:
-            add2x1Room(currentFloor, horizontalIndex);
-            return horizontalIndex + 2;
-        default:
-            throw new Exception("Failure attempting to add room");
-    }
-}
+        private static int Add2x1Or2x2Room(Random random, HouseFloor currentFloor, int horizontalIndex)
+            //Returns new horizontal index after adding the room
+        {
+            int roomType = random.Next(0, 2);
+            switch (roomType)
+            {
+                case 0:
+                    Add1x1Room(currentFloor, horizontalIndex);
+                    return ++horizontalIndex;
+                case 1:
+                    add2x1Room(currentFloor, horizontalIndex);
+                    return horizontalIndex + 2;
+                default:
+                    throw new Exception("Failure attempting to add room");
+            }
+        }
 
-private static int AddUpTo3x2Room(Random random, HouseFloor currentFloor, HouseFloor nextFloor, int horizontalIndex)
-    //Returns new horizontal index after adding the room
-{
-    int roomType = random.Next(0, 4);
-    switch (roomType)
-    {
-        case 0:
-            Add1x1Room(currentFloor, horizontalIndex);
-            return ++horizontalIndex;
-        case 1:
-            add2x1Room(currentFloor, horizontalIndex);
-            return horizontalIndex + 2;
-        case 2:
-            add2x2Room(currentFloor, nextFloor, horizontalIndex);
-            return horizontalIndex + 2;
-        case 3:
-            add3x2Room(currentFloor, nextFloor, horizontalIndex);
-            return horizontalIndex + 3;
-        default:
-            throw new Exception("Failure attempting to add room");
-    }
-}
+        private static int AddUpTo3x2Room(Random random, HouseFloor currentFloor, HouseFloor nextFloor, int horizontalIndex)
+            //Returns new horizontal index after adding the room
+        {
+            int roomType = random.Next(0, 4);
+            switch (roomType)
+            {
+                case 0:
+                    Add1x1Room(currentFloor, horizontalIndex);
+                    return ++horizontalIndex;
+                case 1:
+                    add2x1Room(currentFloor, horizontalIndex);
+                    return horizontalIndex + 2;
+                case 2:
+                    add2x2Room(currentFloor, nextFloor, horizontalIndex);
+                    return horizontalIndex + 2;
+                case 3:
+                    add3x2Room(currentFloor, nextFloor, horizontalIndex);
+                    return horizontalIndex + 3;
+                default:
+                    throw new Exception("Failure attempting to add room");
+            }
+        }
 
         private static int Add1x1Room(HouseFloor currentFloor, int horizontalIndex)//Returns new horizontal index after adding the room
         {
