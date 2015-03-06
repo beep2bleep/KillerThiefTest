@@ -76,7 +76,6 @@ public class CreateHouses : MonoBehaviour {
             int width = random.Next(minWidth, maxWidth);
             House houseToBuild = new House(height, width);
 
-            //House is container of floors
             //Lets just always start from bottom left
 
             for (int floor = 0; floor < height; floor++)
@@ -227,7 +226,7 @@ public class CreateHouses : MonoBehaviour {
             default:
                 return horizontalIndex + 1;
                 break;
-            //throw new Exception("Failure attempting to add room");
+                //throw new Exception("Failure attempting to add room");
         }
     }
 
@@ -252,7 +251,7 @@ public class CreateHouses : MonoBehaviour {
             default:
                 return horizontalIndex + 1;
                 break;
-            //throw new Exception("Failure attempting to add room");
+                //throw new Exception("Failure attempting to add room");
         }
     }
 
