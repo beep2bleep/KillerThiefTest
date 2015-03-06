@@ -1,0 +1,12 @@
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.exe.config
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.exe
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.pdb
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.csprojResolveAssemblyReference.cache
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.exe
+c:\users\m\documents\visual studio 2013\Projects\BuildRoomsConsoleApp\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.pdb
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.exe.config
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.exe
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.pdb
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.exe
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\bin\Debug\BuildRoomsConsoleApp.pdb
+C:\Users\M\Documents\KillerThiefTest\BuildRoomsConsoleApp\obj\Debug\BuildRoomsConsoleApp.csprojResolveAssemblyReference.cache
