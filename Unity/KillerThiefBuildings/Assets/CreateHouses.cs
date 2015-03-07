@@ -64,10 +64,7 @@ public class CreateHouses : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
         GenerateBuildings();
-
-        
 	}
 
     public void SetNumberHouses(string inValue)
@@ -201,8 +198,6 @@ public class CreateHouses : MonoBehaviour {
                 HouseFloor currentFloor = houseToBuild.floors[floor];
                 foreach (Room room in currentFloor.rooms)
                 {
-
-                    //GameObject.CreatePrimitive(PrimitiveType.Cube);//;(new Cube(), this.transform.position(), this.transform.rotation);
                     if (room.type == "Stair")
                     {
                         ((GameObject)Instantiate(stairs, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
@@ -225,17 +220,12 @@ public class CreateHouses : MonoBehaviour {
                     }
                 }
             }
-            leftSideOfCurrentBuilding = leftSideOfCurrentBuilding + houseToBuild.width + random.Next(1, 3);
+            leftSideOfCurrentBuilding = leftSideOfCurrentBuilding + houseToBuild.width + random.Next(1, 3 + 1);//1-3 spaces apart
         }
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    if(Input.GetKeyDown(KeyCode.R))
-        {
-            
-            GenerateBuildings();
-        }
 	}
 
     private static bool CanFit2WideRoom(int width, HouseFloor currentFloor, int stairIndex, int horizontalIndex)

@@ -14,19 +14,39 @@ public class moveCamera : MonoBehaviour {
 	void Update () {
 	    if(Input.GetKey( KeyCode.UpArrow))
         {
-            mainCamera.orthographicSize += mainCamera.orthographicSize * Time.deltaTime;
+            ZoomOut();
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            mainCamera.orthographicSize -= mainCamera.orthographicSize * Time.deltaTime;
+            ZoomIn();
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 5 * Time.deltaTime, mainCamera.transform.position.y, mainCamera.transform.position.z);
+            MoveLeft();
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + -5 * Time.deltaTime, mainCamera.transform.position.y, mainCamera.transform.position.z);
+            MoveRight();
         }
 	}
+
+    public void MoveRight()
+    {
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + -50 * Time.deltaTime, mainCamera.transform.position.y, mainCamera.transform.position.z);
+    }
+
+    public void MoveLeft()
+    {
+        mainCamera.transform.position = new Vector3(mainCamera.transform.position.x + 50 * Time.deltaTime, mainCamera.transform.position.y, mainCamera.transform.position.z);
+    }
+
+    public void ZoomIn()
+    {
+        mainCamera.orthographicSize -= mainCamera.orthographicSize * Time.deltaTime;
+    }
+
+    public void ZoomOut()
+    {
+        mainCamera.orthographicSize += mainCamera.orthographicSize * Time.deltaTime;
+    }
 }
