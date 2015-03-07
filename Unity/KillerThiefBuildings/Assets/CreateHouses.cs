@@ -70,8 +70,58 @@ public class CreateHouses : MonoBehaviour {
         
 	}
 
-    private void GenerateBuildings()
+    public void SetNumberHouses(string inValue)
     {
+        int result;
+        if(int.TryParse(inValue, out result))
+        {
+            buildingCount = result;
+        }
+    }
+
+    public void SetMinWidth(string inMinWidth)
+    {
+        int result;
+        if (int.TryParse(inMinWidth, out result))
+        {
+            minWidth = result;
+        }
+    }
+
+    public void SetMaxWidth(string inMaxWidth)
+    {
+        int result;
+        if (int.TryParse(inMaxWidth, out result))
+        {
+            maxWidth = result;
+        }
+    }
+
+    public void SetMinHeight(string inMinHeight)
+    {
+        int result;
+        if (int.TryParse(inMinHeight, out result))
+        {
+            minHeight = result;
+        }
+    }
+
+    public void SetMaxHeight(string inMaxHeight)
+    {
+        int result;
+        if (int.TryParse(inMaxHeight, out result))
+        {
+            maxHeight = result;
+        }
+    }
+
+    public void GenerateBuildings()
+    {
+        foreach (Transform child in this.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         int leftSideOfCurrentBuilding = 0;
         System.Random random = new System.Random();
 
@@ -79,8 +129,8 @@ public class CreateHouses : MonoBehaviour {
         {
 
             //Console.WriteLine("Building a building");
-            int height = random.Next(minHeight, maxHeight);
-            int width = random.Next(minWidth, maxWidth);
+            int height = random.Next(minHeight, maxHeight + 1);
+            int width = random.Next(minWidth, maxWidth + 1);
             House houseToBuild = new House(height, width);
 
             //Lets just always start from bottom left
@@ -183,10 +233,7 @@ public class CreateHouses : MonoBehaviour {
 	void Update () {
 	    if(Input.GetKeyDown(KeyCode.R))
         {
-            foreach(Transform child in this.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            
             GenerateBuildings();
         }
 	}

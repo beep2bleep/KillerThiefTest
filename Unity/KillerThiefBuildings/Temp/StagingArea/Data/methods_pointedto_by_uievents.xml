@@ -1,0 +1,12 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="CreateHouses">
+			<method name="SetMaxHeight"/>
+			<method name="SetMaxWidth"/>
+			<method name="SetNumberHouses"/>
+			<method name="SetMinWidth"/>
+			<method name="GenerateBuildings"/>
+			<method name="SetMinHeight"/>
+		</type>
+	</assembly>
+</linker>
