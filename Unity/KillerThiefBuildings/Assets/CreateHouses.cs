@@ -65,12 +65,19 @@ public class CreateHouses : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+        GenerateBuildings();
+
+        
+	}
+
+    private void GenerateBuildings()
+    {
         int leftSideOfCurrentBuilding = 0;
         System.Random random = new System.Random();
 
         for (int i = 0; i < buildingCount; i++)
         {
-            
+
             //Console.WriteLine("Building a building");
             int height = random.Next(minHeight, maxHeight);
             int width = random.Next(minWidth, maxWidth);
@@ -89,7 +96,7 @@ public class CreateHouses : MonoBehaviour {
                 }
 
                 int stairIndex = random.Next(0, width);
-                while(currentFloor.squareTaken[stairIndex])
+                while (currentFloor.squareTaken[stairIndex])
                 {
                     stairIndex = random.Next(0, width);//Make sure stairs are not in a taken spot
                 }
@@ -142,51 +149,56 @@ public class CreateHouses : MonoBehaviour {
             for (int floor = 0; floor < height; floor++)
             {
                 HouseFloor currentFloor = houseToBuild.floors[floor];
-                foreach(Room room in currentFloor.rooms)
+                foreach (Room room in currentFloor.rooms)
                 {
-                    
+
                     //GameObject.CreatePrimitive(PrimitiveType.Cube);//;(new Cube(), this.transform.position(), this.transform.rotation);
-                    if(room.type == "Stair")
+                    if (room.type == "Stair")
                     {
-                        Instantiate(stairs, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                        ((GameObject)Instantiate(stairs, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
                     }
                     if (room.type == "1x1")
                     {
-                        Instantiate(_1x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                        ((GameObject)Instantiate(_1x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
                     }
                     if (room.type == "2x1")
                     {
-                        Instantiate(_2x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation); 
+                        ((GameObject)Instantiate(_2x1, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
                     }
                     if (room.type == "2x2")
                     {
-                        Instantiate(_2x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                        ((GameObject)Instantiate(_2x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
                     }
                     if (room.type == "3x2")
                     {
-                        Instantiate(_3x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation);
+                        ((GameObject)Instantiate(_3x2, new Vector3(1 * room.location + leftSideOfCurrentBuilding, 1 * floor, 0), this.transform.rotation)).transform.parent = this.transform;
                     }
                 }
             }
             leftSideOfCurrentBuilding = leftSideOfCurrentBuilding + houseToBuild.width + random.Next(1, 3);
         }
-
-        
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	    
+	    if(Input.GetKeyDown(KeyCode.R))
+        {
+            foreach(Transform child in this.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            GenerateBuildings();
+        }
 	}
 
     private static bool CanFit2WideRoom(int width, HouseFloor currentFloor, int stairIndex, int horizontalIndex)
     {
-        return horizontalIndex + 1 < stairIndex && horizontalIndex + 1 < width && !currentFloor.squareTaken[horizontalIndex + 1];
+        return horizontalIndex + 1 < width && !currentFloor.squareTaken[horizontalIndex + 1];
     }
 
     private static bool CanFit3WideRoom(int width, HouseFloor currentFloor, int stairIndex, int horizontalIndex)
     {
-        return horizontalIndex + 2 < stairIndex && horizontalIndex + 2 < width && !currentFloor.squareTaken[horizontalIndex + 1] && !currentFloor.squareTaken[horizontalIndex + 2];
+        return horizontalIndex + 2 < width && !currentFloor.squareTaken[horizontalIndex + 1] && !currentFloor.squareTaken[horizontalIndex + 2];
     }
 
     private static int AddUpTo2x2Room(System.Random random, HouseFloor currentFloor, HouseFloor nextFloor, int horizontalIndex)
